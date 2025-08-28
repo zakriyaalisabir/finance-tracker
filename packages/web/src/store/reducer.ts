@@ -20,6 +20,8 @@ export function appReducer(state = initialState, action: AppAction): AppState {
       return { ...state, accounts: action.payload };
     case REDUX_ACTIONS.SET_CATEGORIES:
       return { ...state, categories: action.payload };
+    case REDUX_ACTIONS.SET_TRANSACTIONS:
+      return { ...state, transactions: action.payload };
     case REDUX_ACTIONS.SET_SUMMARY:
       return { ...state, summary: action.payload };
     case REDUX_ACTIONS.SET_BREAKDOWN:
@@ -32,3 +34,6 @@ export function appReducer(state = initialState, action: AppAction): AppState {
       return state;
   }
 }
+
+export const rootReducer = appReducer;
+export { initialState };

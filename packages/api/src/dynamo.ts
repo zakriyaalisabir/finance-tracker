@@ -54,6 +54,31 @@ export async function getCategories(): Promise<Category[]> {
   const data = await dynamo.scan({ TableName: CATEGORIES_TABLE }).promise();
   return (data.Items || []) as Category[];
 }
+
+/**
+ * Gets transactions with optional date filtering
+ * @param start - Start date filter (YYYY-MM-DD)
+ * @param end - End date filter (YYYY-MM-DD)
+ * @returns Promise resolving to list of transactions
+ */
+export async function getTransactions(start?: string, end?: string): Promise<Transaction[]> {
+  let params: any = { TableName: TRANSACTIONS_TABLE };
+  
+  if (start || end) {
+    params.IndexName = INDEX_NAMES.DATE_INDEX;
+    params.KeyConditionExpression = '#date BETWEEN :start AND :end';
+    params.ExpressionAttributeNames = { '#date': 'date' };
+    params.ExpressionAttributeValues = {
+      ':start': start || '1900-01-01',
+      ':end': end || '2099-12-31'
+    };
+    const data = await dynamo.query(params).promise();
+    return (data.Items || []) as Transaction[];
+  } else {
+    const data = await dynamo.scan(params).promise();
+    return ((data.Items || []) as Transaction[]).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  }
+}
 const TRANSACTIONS_TABLE = process.env[ENVIRONMENT_VARIABLES.TRANSACTIONS_TABLE]!;
 const SUBSCRIPTIONS_TABLE = process.env[ENVIRONMENT_VARIABLES.SUBSCRIPTIONS_TABLE]!;
 const NETWORTH_TABLE = process.env[ENVIRONMENT_VARIABLES.NETWORTH_TABLE]!;

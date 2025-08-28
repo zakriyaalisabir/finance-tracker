@@ -2,7 +2,7 @@ import express from 'express';
 import serverless from 'serverless-http';
 import bodyParser from 'body-parser';
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import { addAccount, getAccounts, addCategory, getCategories, addTransaction, getSummary, getMonthlyBreakdown, postSubscriptions, addSubscription, getSubscriptions, addNetWorthSnapshot, getNetWorthHistory } from './dynamo';
+import { addAccount, getAccounts, addCategory, getCategories, addTransaction, getTransactions, getSummary, getMonthlyBreakdown, postSubscriptions, addSubscription, getSubscriptions, addNetWorthSnapshot, getNetWorthHistory } from './dynamo';
 import { startScheduler } from './scheduler';
 import { API_ENDPOINTS, ENVIRONMENT_VARIABLES } from './constants';
 
@@ -48,6 +48,12 @@ app.post(API_ENDPOINTS.TRANSACTIONS, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' });
   }
+});
+
+app.get(API_ENDPOINTS.TRANSACTIONS, async (req, res) => {
+  const { start, end } = req.query as { start?: string; end?: string };
+  const result = await getTransactions(start, end);
+  res.json(result);
 });
 
 app.get(API_ENDPOINTS.SUMMARY, async (req, res) => {

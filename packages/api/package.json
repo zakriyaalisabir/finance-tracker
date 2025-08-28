@@ -6,7 +6,10 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "dev:local": "npm run build && node dist/local.js",
-    "deploy": "npm run build && sls deploy"
+    "deploy": "npm run build && sls deploy",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -24,8 +27,13 @@
     "@types/aws-lambda": "^8.10.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.0",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
     "@types/node-cron": "^3.0.11",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.1.1",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.1",
     "typescript": "^5.3.0"
   }
 }

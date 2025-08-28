@@ -65,6 +65,19 @@ const mockGetCategories = async () => {
   return mockData.categories;
 };
 
+const mockGetTransactions = async (start?: string, end?: string) => {
+  let filtered = mockData.transactions;
+  if (start || end) {
+    filtered = mockData.transactions.filter(tx => {
+      const txDate = tx.date;
+      if (start && txDate < start) return false;
+      if (end && txDate > end) return false;
+      return true;
+    });
+  }
+  return filtered.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+};
+
 const mockGetSummary = async (start?: string, end?: string) => {
   let inflow = 0, outflow = 0, byCcy: Record<string, { inflow: number; outflow: number }> = {};
   for (const tx of mockData.transactions) {
@@ -115,6 +128,12 @@ app.post(API_ENDPOINTS.TRANSACTIONS, async (req, res) => {
   }
 });
 
+app.get(API_ENDPOINTS.TRANSACTIONS, async (req, res) => {
+  const { start, end } = req.query as { start?: string; end?: string };
+  const result = await mockGetTransactions(start, end);
+  res.json(result);
+});
+
 app.get(API_ENDPOINTS.SUMMARY, async (req, res) => {
   const result = await mockGetSummary();
   res.json(result);
@@ -122,6 +141,21 @@ app.get(API_ENDPOINTS.SUMMARY, async (req, res) => {
 
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'Local API server running' });
+});
+
+app.post('/reset', (req, res) => {
+  // Reset all mock data to empty arrays
+  mockData.accounts = [];
+  mockData.categories = [];
+  mockData.transactions = [];
+  mockData.subscriptions = [];
+  mockData.networth = [];
+  
+  res.json({ 
+    success: true, 
+    message: 'All data reset to zero',
+    data: mockData 
+  });
 });
 
 app.listen(PORT, () => {

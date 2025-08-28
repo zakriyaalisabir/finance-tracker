@@ -8,7 +8,10 @@
     "build": "lerna run build",
     "dev": "lerna run dev --parallel",
     "dev:local": "concurrently \"cd packages/api && npm run dev:local\" \"cd packages/web && npm run dev\"",
-    "deploy": "lerna run deploy"
+    "deploy": "lerna run deploy",
+    "test": "lerna run test",
+    "test:watch": "lerna run test:watch --parallel",
+    "test:coverage": "lerna run test:coverage"
   },
   "engines": {
     "node": ">=22.0.0"
