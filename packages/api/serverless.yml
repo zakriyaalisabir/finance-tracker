@@ -1,0 +1,80 @@
+service: finance-tracker
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: ap-southeast-1
+  environment:
+    TRANSACTIONS_TABLE: FinanceTransactions
+    SUBSCRIPTIONS_TABLE: Subscriptions
+    NETWORTH_TABLE: NetWorth
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: "*"
+
+resources:
+  Resources:
+    FinanceTransactions:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: FinanceTransactions
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+          - AttributeName: monthSheet
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: DateIndex
+            KeySchema:
+              - AttributeName: date
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: MonthSheetIndex
+            KeySchema:
+              - AttributeName: monthSheet
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+    
+    Subscriptions:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Subscriptions
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    
+    NetWorth:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: NetWorth
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: DateIndex
+            KeySchema:
+              - AttributeName: date
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST

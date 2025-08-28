@@ -1,0 +1,10 @@
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+.section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+.section h2 { margin-top: 0; }
+form { display: flex; gap: 10px; flex-wrap: wrap; }
+input, select, button { padding: 8px; border: 1px solid #ccc; border-radius: 3px; }
+button { background: #007cba; color: white; cursor: pointer; }
+button:hover { background: #005a87; }
+.controls { margin: 20px 0; }
+.controls button { margin-right: 10px; margin-bottom: 10px; }
+#output { background: #f5f5f5; padding: 15px; border-radius: 5px; white-space: pre-wrap; }

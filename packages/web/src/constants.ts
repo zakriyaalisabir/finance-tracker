@@ -1,0 +1,39 @@
+export const API_BASE_URL = 'http://localhost:3001';
+
+export const REDUX_ACTIONS = {
+  ADD_ACCOUNT: 'ADD_ACCOUNT',
+  LOAD_ACCOUNTS: 'LOAD_ACCOUNTS',
+  SET_ACCOUNTS: 'SET_ACCOUNTS',
+  ADD_TRANSACTION: 'ADD_TRANSACTION',
+  ADD_SUBSCRIPTION: 'ADD_SUBSCRIPTION',
+  LOAD_SUMMARY: 'LOAD_SUMMARY',
+  LOAD_BREAKDOWN: 'LOAD_BREAKDOWN',
+  LOAD_SUBSCRIPTIONS: 'LOAD_SUBSCRIPTIONS',
+  LOAD_NETWORTH: 'LOAD_NETWORTH',
+  POST_SUBSCRIPTIONS: 'POST_SUBSCRIPTIONS',
+  SET_LOADING: 'SET_LOADING',
+  SET_SUMMARY: 'SET_SUMMARY',
+  SET_BREAKDOWN: 'SET_BREAKDOWN',
+  SET_SUBSCRIPTIONS: 'SET_SUBSCRIPTIONS',
+  SET_NETWORTH: 'SET_NETWORTH'
+} as const;
+
+export const API_ENDPOINTS = {
+  ACCOUNTS: '/accounts',
+  TRANSACTIONS: '/transactions',
+  SUMMARY: '/summary',
+  BREAKDOWN: '/breakdown',
+  SUBSCRIPTIONS: '/subscriptions',
+  SUBSCRIPTIONS_POST: '/subscriptions/post',
+  NETWORTH: '/networth'
+} as const;
+
+export const FORM_FIELDS = {
+  DATE: 'date',
+  ACCOUNT: 'account',
+  CATEGORY: 'category',
+  AMOUNT: 'amount',
+  CURRENCY: 'currency',
+  NAME: 'name',
+  FREQUENCY: 'frequency'
+} as const;

@@ -1,0 +1,17 @@
+{
+  "name": "finance-tracker-monorepo",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "lerna run build",
+    "dev": "lerna run dev --parallel",
+    "deploy": "lerna run deploy"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "devDependencies": {
+    "lerna": "^8.0.0",
+    "typescript": "^5.3.0"
+  }
+}

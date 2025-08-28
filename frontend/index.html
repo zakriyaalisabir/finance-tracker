@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Finance Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Finance Tracker</h1>
+  
+  <div class="section">
+    <h2>Add Transaction</h2>
+    <form id="txForm">
+      <input type="date" id="date" required>
+      <input type="text" id="account" placeholder="Account">
+      <input type="text" id="category" placeholder="Category">
+      <input type="number" id="amount" placeholder="Amount">
+      <input type="text" id="currency" value="THB">
+      <button type="submit">Add Transaction</button>
+    </form>
+  </div>
+
+  <div class="section">
+    <h2>Add Subscription</h2>
+    <form id="subForm">
+      <input type="text" id="subName" placeholder="Name (Netflix)" required>
+      <input type="text" id="subAccount" placeholder="Account">
+      <input type="number" id="subAmount" placeholder="Amount" required>
+      <select id="subFreq">
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+      </select>
+      <input type="text" id="subCurrency" value="THB">
+      <button type="submit">Add Subscription</button>
+    </form>
+  </div>
+
+  <div class="section">
+    <h2>Net Worth Snapshot</h2>
+    <form id="nwForm">
+      <input type="number" id="assets" placeholder="Total Assets">
+      <input type="number" id="liabilities" placeholder="Total Liabilities">
+      <button type="submit">Save Snapshot</button>
+    </form>
+  </div>
+
+  <div class="controls">
+    <button onclick="loadSummary()">Summary</button>
+    <button onclick="loadBreakdown()">Monthly Breakdown</button>
+    <button onclick="loadSubscriptions()">Subscriptions</button>
+    <button onclick="loadNetWorth()">Net Worth</button>
+    <button onclick="postSubscriptions()">Post Due Subscriptions</button>
+  </div>
+
+  <pre id="output"></pre>
+  <script src="app.js"></script>
+</body>
+</html>

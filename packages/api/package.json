@@ -1,0 +1,31 @@
+{
+  "name": "@finance-tracker/api",
+  "version": "1.0.0",
+  "main": "dist/handler.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "dev:local": "npm run build && node dist/local.js",
+    "deploy": "npm run build && sls deploy"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "@finance-tracker/shared": "1.0.0",
+    "aws-sdk": "^2.1482.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "node-cron": "^3.0.3",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.0",
+    "@types/node": "^20.0.0",
+    "@types/node-cron": "^3.0.11",
+    "typescript": "^5.3.0"
+  }
+}
