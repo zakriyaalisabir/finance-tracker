@@ -4,7 +4,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { addAccount, getAccounts, addTransaction, getSummary, getMonthlyBreakdown, postSubscriptions, addSubscription, getSubscriptions, addNetWorthSnapshot, getNetWorthHistory } from './dynamo';
+import { addAccount, getAccounts, addCategory, getCategories, addTransaction, getSummary, getMonthlyBreakdown, postSubscriptions, addSubscription, getSubscriptions, addNetWorthSnapshot, getNetWorthHistory } from './dynamo';
 import { API_ENDPOINTS } from './constants';
 
 const app = express();
@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 // Mock DynamoDB for local development
 const mockData = {
   accounts: [] as any[],
+  categories: [] as any[],
   transactions: [] as any[],
   subscriptions: [] as any[],
   networth: [] as any[]
@@ -50,6 +51,20 @@ const mockGetAccounts = async () => {
   return mockData.accounts;
 };
 
+const mockAddCategory = async (category: any) => {
+  const item = {
+    id: Date.now().toString(),
+    ...category,
+    createdAt: new Date().toISOString()
+  };
+  mockData.categories.push(item);
+  return item;
+};
+
+const mockGetCategories = async () => {
+  return mockData.categories;
+};
+
 const mockGetSummary = async (start?: string, end?: string) => {
   let inflow = 0, outflow = 0, byCcy: Record<string, { inflow: number; outflow: number }> = {};
   for (const tx of mockData.transactions) {
@@ -74,6 +89,20 @@ app.post(API_ENDPOINTS.ACCOUNTS, async (req, res) => {
 
 app.get(API_ENDPOINTS.ACCOUNTS, async (req, res) => {
   const result = await mockGetAccounts();
+  res.json(result);
+});
+
+app.post(API_ENDPOINTS.CATEGORIES, async (req, res) => {
+  try {
+    const result = await mockAddCategory(req.body);
+    res.json({ success: true, result });
+  } catch (err) {
+    res.status(500).json({ error: err instanceof Error ? err.message : 'Unknown error' });
+  }
+});
+
+app.get(API_ENDPOINTS.CATEGORIES, async (req, res) => {
+  const result = await mockGetCategories();
   res.json(result);
 });
 

@@ -8,6 +8,8 @@ export const DEFAULT_REGION = 'ap-southeast-1';
 export const TABLE_NAMES = {
   /** Financial accounts table */
   ACCOUNTS: 'Accounts',
+  /** Transaction categories table */
+  CATEGORIES: 'Categories',
   /** Main transactions table */
   TRANSACTIONS: 'FinanceTransactions',
   /** Recurring subscriptions table */

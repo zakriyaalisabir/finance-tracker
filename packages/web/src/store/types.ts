@@ -1,7 +1,66 @@
-import { Account, Transaction, Subscription, NetWorthSnapshot, Summary, MonthlyBreakdown } from '@finance-tracker/shared';
+// Local interfaces to avoid module resolution issues
+interface Account {
+  id?: string;
+  name: string;
+  currency: string;
+  createdAt?: string;
+}
+
+interface Category {
+  id?: string;
+  name: string;
+  createdAt?: string;
+}
+
+interface Transaction {
+  id?: string;
+  date: string;
+  account: string;
+  category: string;
+  amount: number;
+  currency: string;
+  description?: string;
+  monthSheet?: string;
+  createdAt?: string;
+}
+
+interface Subscription {
+  id?: string;
+  name: string;
+  account: string;
+  amount: number;
+  frequency: 'monthly' | 'yearly';
+  currency: string;
+  lastPosted?: string;
+  createdAt?: string;
+}
+
+interface NetWorthSnapshot {
+  id?: string;
+  date?: string;
+  accounts?: Record<string, number>;
+  assets: number;
+  liabilities: number;
+  netWorth: number;
+  createdAt?: string;
+}
+
+interface Summary {
+  inflow: number;
+  outflow: number;
+  net: number;
+  byCcy: Record<string, { inflow: number; outflow: number }>;
+}
+
+interface MonthlyBreakdown {
+  creditCards: Record<string, number>;
+  categories: Record<string, number>;
+  sheetData: [string, string | number][];
+}
 
 export interface AppState {
   accounts: Account[];
+  categories: Category[];
   transactions: Transaction[];
   subscriptions: Subscription[];
   netWorth: NetWorthSnapshot[];
@@ -12,7 +71,7 @@ export interface AppState {
 
 import { REDUX_ACTIONS } from '../constants';
 
-export const { ADD_ACCOUNT, LOAD_ACCOUNTS, ADD_TRANSACTION, ADD_SUBSCRIPTION, LOAD_SUMMARY, LOAD_BREAKDOWN, LOAD_SUBSCRIPTIONS, LOAD_NETWORTH, POST_SUBSCRIPTIONS, SET_LOADING } = REDUX_ACTIONS;
+export const { ADD_ACCOUNT, LOAD_ACCOUNTS, ADD_CATEGORY, LOAD_CATEGORIES, ADD_TRANSACTION, ADD_SUBSCRIPTION, LOAD_SUMMARY, LOAD_BREAKDOWN, LOAD_SUBSCRIPTIONS, LOAD_NETWORTH, POST_SUBSCRIPTIONS, SET_LOADING } = REDUX_ACTIONS;
 
 export interface AddTransactionAction {
   type: typeof ADD_TRANSACTION;

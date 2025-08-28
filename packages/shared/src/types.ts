@@ -13,6 +13,18 @@ export interface Account {
 }
 
 /**
+ * Represents a transaction category
+ */
+export interface Category {
+  /** Unique identifier for the category */
+  id?: string;
+  /** Category name (e.g., "Food", "Transport", "Entertainment") */
+  name: string;
+  /** ISO timestamp when record was created */
+  createdAt?: string;
+}
+
+/**
  * Represents a financial transaction
  */
 export interface Transaction {

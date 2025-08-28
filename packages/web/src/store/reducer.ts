@@ -3,6 +3,7 @@ import { REDUX_ACTIONS } from '../constants';
 
 const initialState: AppState = {
   accounts: [],
+  categories: [],
   transactions: [],
   subscriptions: [],
   netWorth: [],
@@ -17,6 +18,8 @@ export function appReducer(state = initialState, action: AppAction): AppState {
       return { ...state, loading: action.payload };
     case REDUX_ACTIONS.SET_ACCOUNTS:
       return { ...state, accounts: action.payload };
+    case REDUX_ACTIONS.SET_CATEGORIES:
+      return { ...state, categories: action.payload };
     case REDUX_ACTIONS.SET_SUMMARY:
       return { ...state, summary: action.payload };
     case REDUX_ACTIONS.SET_BREAKDOWN:

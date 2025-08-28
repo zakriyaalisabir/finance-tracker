@@ -1,10 +1,11 @@
 import AWS from 'aws-sdk';
-import { Transaction, Subscription, NetWorthSnapshot, Summary, MonthlyBreakdown, Account, DEFAULT_CURRENCY, CATEGORIES, INDEX_NAMES, TABLE_NAMES } from '@finance-tracker/shared';
+import { Transaction, Subscription, NetWorthSnapshot, Summary, MonthlyBreakdown, Account, Category, DEFAULT_CURRENCY, CATEGORIES, INDEX_NAMES, TABLE_NAMES } from '@finance-tracker/shared';
 import { ENVIRONMENT_VARIABLES } from './constants';
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
 const ACCOUNTS_TABLE = process.env[ENVIRONMENT_VARIABLES.ACCOUNTS_TABLE] || TABLE_NAMES.ACCOUNTS;
+const CATEGORIES_TABLE = process.env[ENVIRONMENT_VARIABLES.CATEGORIES_TABLE] || TABLE_NAMES.CATEGORIES;
 
 /**
  * Adds a new account
@@ -28,6 +29,30 @@ export async function addAccount(account: Omit<Account, 'id' | 'createdAt'>): Pr
 export async function getAccounts(): Promise<Account[]> {
   const data = await dynamo.scan({ TableName: ACCOUNTS_TABLE }).promise();
   return (data.Items || []) as Account[];
+}
+
+/**
+ * Adds a new category
+ * @param category - Category data without id or createdAt
+ * @returns Promise resolving to the created category
+ */
+export async function addCategory(category: Omit<Category, 'id' | 'createdAt'>): Promise<Category> {
+  const item = {
+    id: Date.now().toString(),
+    ...category,
+    createdAt: new Date().toISOString()
+  };
+  await dynamo.put({ TableName: CATEGORIES_TABLE, Item: item }).promise();
+  return item;
+}
+
+/**
+ * Gets all categories
+ * @returns Promise resolving to list of categories
+ */
+export async function getCategories(): Promise<Category[]> {
+  const data = await dynamo.scan({ TableName: CATEGORIES_TABLE }).promise();
+  return (data.Items || []) as Category[];
 }
 const TRANSACTIONS_TABLE = process.env[ENVIRONMENT_VARIABLES.TRANSACTIONS_TABLE]!;
 const SUBSCRIPTIONS_TABLE = process.env[ENVIRONMENT_VARIABLES.SUBSCRIPTIONS_TABLE]!;
