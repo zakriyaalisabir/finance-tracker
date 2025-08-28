@@ -24,6 +24,11 @@ jobs:
         npm ci
         npm ci --workspaces
     
+    - name: Build shared package
+      run: |
+        cd packages/shared
+        npm run build
+    
     - name: Check TypeScript compilation
       run: |
         cd packages/shared && npx tsc --noEmit
