@@ -259,6 +259,19 @@ The system creates the following AWS resources:
 - Frontend uses Redux for optimized state management
 - API uses serverless architecture for automatic scaling
 
+## CI/CD
+
+### GitHub Actions
+The project includes automated workflows:
+- **CI**: Runs tests on push/PR to main/develop branches
+- **Deploy**: Deploys to AWS on main branch pushes
+- **Lint**: TypeScript compilation checks
+
+### Required Secrets
+For AWS deployment, add these secrets to your GitHub repository:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
 ## Contributing
 
 1. Follow TypeScript strict mode
