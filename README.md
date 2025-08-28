@@ -47,6 +47,7 @@ finance-tracker/
 - **Frontend**: React 18, TypeScript, Redux, Redux Saga, Vite
 - **Infrastructure**: Serverless Framework, AWS API Gateway
 - **Monorepo**: Lerna, npm workspaces
+- **Testing**: Jest, React Testing Library, Supertest
 
 ## Prerequisites
 
@@ -68,28 +69,70 @@ cd packages/shared
 npm run build
 ```
 
-### 3. Deploy API
+### 3. Start Local Development
+```bash
+# Start both API and web in parallel
+npm run dev:local
+```
+
+### 4. Deploy to AWS (Optional)
 ```bash
 cd packages/api
 npm run build
 npm run deploy
 ```
 
-### 4. Update API URL
+### 5. Update API URL (For AWS deployment)
 Replace `<your-api-gateway-id>` in `packages/web/src/constants.ts` with your actual API Gateway URL.
 
-### 5. Start Frontend
+## Development
+
+### Available Scripts
+
+#### Root Level
 ```bash
-cd packages/web
-npm run dev
+npm run build           # Build all packages
+npm run dev            # Start all development servers
+npm run dev:local      # Start local API + web development
+npm run deploy         # Deploy all packages
+npm run test           # Run all tests
+npm run test:watch     # Run tests in watch mode
+npm run test:coverage  # Run tests with coverage
+```
+
+#### Package Level
+```bash
+# Shared package
+npm run build       # Compile TypeScript
+npm run dev         # Watch mode compilation
+
+# API package
+npm run build       # Compile TypeScript
+npm run dev         # Watch mode compilation
+npm run dev:local   # Start local Express server
+npm run deploy      # Deploy to AWS
+
+# Web package
+npm run dev         # Start Vite dev server
+npm run build       # Build for production
+npm run preview     # Preview production build
+npm run test        # Run Jest tests
 ```
 
 ## API Endpoints
 
 ### Transactions
 - `POST /transactions` - Add new transaction
+- `GET /transactions` - List all transactions
+- `GET /transactions?start=YYYY-MM-DD&end=YYYY-MM-DD` - Filter by date
 - `GET /summary?start=YYYY-MM-DD&end=YYYY-MM-DD` - Get financial summary
 - `GET /breakdown/YYYY-MM` - Get monthly breakdown
+
+### Accounts & Categories
+- `POST /accounts` - Add new account
+- `GET /accounts` - List all accounts
+- `POST /categories` - Add new category
+- `GET /categories` - List all categories
 
 ### Subscriptions
 - `POST /subscriptions` - Add new subscription
@@ -99,6 +142,9 @@ npm run dev
 ### Net Worth
 - `POST /networth` - Add net worth snapshot
 - `GET /networth` - Get net worth history
+
+### Development
+- `POST /reset` - Reset all data (local development only)
 
 ## Database Schema
 
@@ -117,35 +163,41 @@ npm run dev
 - **GSI**: `DateIndex` on `date`
 - **Attributes**: date, accounts, assets, liabilities, netWorth
 
-## Development
+## Testing
 
-### Available Scripts
-
-#### Root Level
-```bash
-npm run build        # Build all packages
-npm run dev         # Start all development servers
-npm run deploy      # Deploy all packages
+### Test Structure
+```
+packages/
+├── api/src/__tests__/
+│   └── local.test.ts      # API endpoint tests
+└── web/src/__tests__/
+    ├── App.test.tsx       # React component tests
+    ├── reducer.test.ts    # Redux reducer tests
+    └── sagas.test.ts      # Redux saga tests
 ```
 
-#### Package Level
+### Running Tests
 ```bash
-# Shared package
-npm run build       # Compile TypeScript
-npm run dev         # Watch mode compilation
+# Run all tests
+npm run test
 
-# API package
-npm run build       # Compile TypeScript
-npm run dev         # Watch mode compilation
-npm run deploy      # Deploy to AWS
+# Run tests in watch mode
+npm run test:watch
 
-# Web package
-npm run dev         # Start Vite dev server
-npm run build       # Build for production
-npm run preview     # Preview production build
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests for specific package
+cd packages/api && npm test
+cd packages/web && npm test
 ```
 
-### Adding New Features
+### Test Coverage
+- **API**: Comprehensive endpoint testing with supertest
+- **Web**: React components, Redux reducers, and sagas
+- **Target**: 100% coverage for critical business logic
+
+## Adding New Features
 
 1. **Add Types**: Define interfaces in `packages/shared/src/types.ts`
 2. **Add Constants**: Define constants in appropriate `constants.ts` files
@@ -154,6 +206,7 @@ npm run preview     # Preview production build
 5. **Redux Actions**: Add actions in `packages/web/src/store/types.ts`
 6. **Redux Sagas**: Add async logic in `packages/web/src/store/sagas.ts`
 7. **UI Components**: Add React components in `packages/web/src/components/`
+8. **Tests**: Add corresponding test files in `__tests__` directories
 
 ## Configuration
 
@@ -170,6 +223,11 @@ All magic strings and configuration values are centralized in `constants.ts` fil
 
 ## Deployment
 
+### Local Development
+- Uses Express server with in-memory storage
+- Automatic data reset functionality
+- Hot reload for both API and web
+
 ### AWS Infrastructure
 The system creates the following AWS resources:
 - **3 DynamoDB Tables** with GSI indexes
@@ -181,6 +239,13 @@ The system creates the following AWS resources:
 - **DynamoDB**: Pay-per-request billing mode
 - **Lambda**: Only charged for actual usage
 - **API Gateway**: HTTP API (cheaper than REST API)
+
+## Mobile Support
+
+- **Responsive Design**: Material-UI breakpoints for mobile optimization
+- **Touch-Optimized**: Large buttons and touch-friendly forms
+- **Bottom Navigation**: Mobile-first navigation pattern
+- **Compact Tables**: Smaller fonts and spacing on mobile devices
 
 ## Monitoring
 
@@ -200,7 +265,8 @@ The system creates the following AWS resources:
 2. Add JSDoc comments for all functions
 3. Use constants instead of magic strings
 4. Maintain type safety across packages
-5. Test locally before deploying
+5. Write tests for new features
+6. Test locally before deploying
 
 ## License
 
