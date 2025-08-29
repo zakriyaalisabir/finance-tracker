@@ -20,8 +20,30 @@ export interface Category {
   id?: string;
   /** Category name (e.g., "Food", "Transport", "Entertainment") */
   name: string;
+  /** Monthly budget limit for this category */
+  monthlyBudget?: number;
+  /** Currency for the budget */
+  budgetCurrency?: string;
   /** ISO timestamp when record was created */
   createdAt?: string;
+}
+
+/**
+ * Budget tracking information
+ */
+export interface BudgetStatus {
+  /** Category name */
+  category: string;
+  /** Budget limit */
+  budget: number;
+  /** Amount spent so far */
+  spent: number;
+  /** Remaining budget */
+  remaining: number;
+  /** Percentage of budget used */
+  percentUsed: number;
+  /** Whether budget is exceeded */
+  isOverBudget: boolean;
 }
 
 /**
@@ -42,6 +64,8 @@ export interface Transaction {
   currency: string;
   /** Optional transaction description */
   description?: string;
+  /** Receipt photo URL or base64 data */
+  receiptPhoto?: string;
   /** Auto-generated monthly sheet identifier (Transactions-YYYY-MM) */
   monthSheet?: string;
   /** ISO timestamp when record was created */
@@ -112,6 +136,10 @@ export interface MonthlyBreakdown {
   creditCards: Record<string, number>;
   /** Spending by category */
   categories: Record<string, number>;
+  /** Budget status for each category */
+  budgetStatus: BudgetStatus[];
+  /** Weekly totals for the month */
+  weeklyTotals: Record<string, number>;
   /** Data formatted for sheet export (N:O columns) */
   sheetData: [string, string | number][];
 }

@@ -149,35 +149,38 @@ describe('API Endpoints', () => {
   });
 
   it('should create and get categories', async () => {
-    const category = { name: 'Food' };
+    const category = { name: 'Food', monthlyBudget: 500, budgetCurrency: 'THB' };
     const createResponse = await request(app).post(API_ENDPOINTS.CATEGORIES).send(category);
     expect(createResponse.status).toBe(200);
 
     const getResponse = await request(app).get(API_ENDPOINTS.CATEGORIES);
     expect(getResponse.body).toHaveLength(1);
+    expect(getResponse.body[0].monthlyBudget).toBe(500);
   });
 
   it('should create and get transactions', async () => {
-    const transaction = { date: '2024-01-15', account: 'Test', category: 'Food', amount: 100, currency: 'USD' };
+    const transaction = { date: '2024-01-15', account: 'Test', category: 'Food', amount: 100, currency: 'USD', receiptPhoto: 'receipt.jpg' };
     await request(app).post(API_ENDPOINTS.TRANSACTIONS).send(transaction);
 
     const response = await request(app).get(API_ENDPOINTS.TRANSACTIONS);
     expect(response.body).toHaveLength(1);
     expect(response.body[0].monthSheet).toBe('Transactions-2024-01');
+    expect(response.body[0].receiptPhoto).toBe('receipt.jpg');
   });
 
   it('should filter transactions by date', async () => {
-    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-01-15', account: 'Test', category: 'Food', amount: 100, currency: 'USD' });
-    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-02-15', account: 'Test', category: 'Food', amount: 200, currency: 'USD' });
+    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-01-15', account: 'Test', category: 'Food', amount: 100, currency: 'USD', receiptPhoto: 'jan.jpg' });
+    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-02-15', account: 'Test', category: 'Food', amount: 200, currency: 'USD', receiptPhoto: 'feb.jpg' });
 
     const response = await request(app).get(API_ENDPOINTS.TRANSACTIONS).query({ start: '2024-01-01', end: '2024-01-31' });
     expect(response.body).toHaveLength(1);
     expect(response.body[0].amount).toBe(100);
+    expect(response.body[0].receiptPhoto).toBe('jan.jpg');
   });
 
   it('should calculate summary', async () => {
-    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-01-15', account: 'Test', category: 'Food', amount: 100, currency: 'USD' });
-    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-01-16', account: 'Test', category: 'Food', amount: -50, currency: 'USD' });
+    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-01-15', account: 'Test', category: 'Food', amount: 100, currency: 'USD', receiptPhoto: 'income.jpg' });
+    await request(app).post(API_ENDPOINTS.TRANSACTIONS).send({ date: '2024-01-16', account: 'Test', category: 'Food', amount: -50, currency: 'USD', receiptPhoto: 'expense.jpg' });
 
     const response = await request(app).get(API_ENDPOINTS.SUMMARY);
     expect(response.body.inflow).toBe(100);

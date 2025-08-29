@@ -12,12 +12,27 @@ A comprehensive personal finance management system built with TypeScript, React,
 ### 📊 Financial Reporting
 - **Master Summary** - Inflow/outflow/net with per-currency breakdown for any date range
 - **Monthly Breakdown** - Credit card and category spending analysis
+- **Weekly/Monthly Totals** - Easy access to period summaries with budget tracking
+- **Advanced Filtering** - Multiple filter options for transaction review
+- **Calendar View** - Visual monthly transaction overview
+- **Improved Charts** - Well-organized expense visualization
+- **Asset Graphs** - Track asset trends over time
 - **Sheet Export** - Data formatted for N:O column export to spreadsheets
 
 ### 🔄 Subscription Management
 - **Recurring Subscriptions** - Netflix, Internet, Mobile, etc.
 - **Auto-posting** - Automatically posts due payments as transactions
 - **Flexible Frequencies** - Monthly and yearly subscription support
+
+### 💰 Budget Management
+- **Category Budgets** - Set monthly budget limits for each spending category
+- **Budget Tracking** - Real-time budget vs actual spending comparison
+- **Budget Alerts** - Visual indicators when approaching budget limits
+
+### 📷 Receipt Management
+- **Photo Attachments** - Save receipt photos with transactions
+- **Memory Storage** - Keep financial memories and documentation
+- **Easy Access** - Quick photo upload during transaction entry
 
 ### 💰 Net Worth Tracking
 - **Account Balances** - Track assets and liabilities across accounts

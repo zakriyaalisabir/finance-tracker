@@ -31,14 +31,14 @@ describe('Redux Reducer', () => {
   });
 
   it('should handle SET_CATEGORIES', () => {
-    const categories = [{ id: '1', name: 'Food' }];
+    const categories = [{ id: '1', name: 'Food', monthlyBudget: 500, budgetCurrency: 'THB' }];
     const action = { type: REDUX_ACTIONS.SET_CATEGORIES, payload: categories };
     const newState = rootReducer(initialState, action);
     expect(newState.categories).toEqual(categories);
   });
 
   it('should handle SET_TRANSACTIONS', () => {
-    const transactions = [{ id: '1', date: '2024-01-15', amount: 100 }];
+    const transactions = [{ id: '1', date: '2024-01-15', amount: 100, account: 'Test', category: 'Food', currency: 'THB', receiptPhoto: 'photo.jpg' }];
     const action = { type: REDUX_ACTIONS.SET_TRANSACTIONS, payload: transactions };
     const newState = rootReducer(initialState, action);
     expect(newState.transactions).toEqual(transactions);
@@ -52,7 +52,13 @@ describe('Redux Reducer', () => {
   });
 
   it('should handle SET_BREAKDOWN', () => {
-    const breakdown = { creditCards: {}, categories: {}, sheetData: [] };
+    const breakdown = { 
+      creditCards: {}, 
+      categories: {}, 
+      budgetStatus: [], 
+      weeklyTotals: {}, 
+      sheetData: [] 
+    };
     const action = { type: REDUX_ACTIONS.SET_BREAKDOWN, payload: breakdown };
     const newState = rootReducer(initialState, action);
     expect(newState.breakdown).toEqual(breakdown);

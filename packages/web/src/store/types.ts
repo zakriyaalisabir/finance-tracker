@@ -3,12 +3,16 @@ interface Account {
   id?: string;
   name: string;
   currency: string;
+  balance?: number;
+  type?: 'cash' | 'card' | 'debit' | 'savings';
   createdAt?: string;
 }
 
 interface Category {
   id?: string;
   name: string;
+  monthlyBudget?: number;
+  budgetCurrency?: string;
   createdAt?: string;
 }
 
@@ -20,6 +24,8 @@ interface Transaction {
   amount: number;
   currency: string;
   description?: string;
+  receiptPhoto?: string[];
+  type?: 'income' | 'expense' | 'transfer';
   monthSheet?: string;
   createdAt?: string;
 }
@@ -55,6 +61,8 @@ interface Summary {
 interface MonthlyBreakdown {
   creditCards: Record<string, number>;
   categories: Record<string, number>;
+  budgets: Record<string, { budget: number; spent: number; remaining: number; percentage: number }>;
+  weeklyTotals: Record<string, number>;
   sheetData: [string, string | number][];
 }
 
