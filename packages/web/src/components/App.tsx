@@ -274,7 +274,7 @@ export const App: React.FC = () => {
 
         {/* Overall Summary Cards */}
         <Grid container spacing={isMobile ? 2 : 3} sx={{ mb: 3 }}>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Card sx={{ background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)', color: 'white' }}>
               <CardContent sx={{ pb: isMobile ? 2 : 3 }}>
                 <Typography variant={isMobile ? "body1" : "h6"}>💰 Total Inflow</Typography>
@@ -282,7 +282,7 @@ export const App: React.FC = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
             <Card sx={{ background: 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)', color: 'white' }}>
               <CardContent sx={{ pb: isMobile ? 2 : 3 }}>
                 <Typography variant={isMobile ? "body1" : "h6"}>💸 Total Outflow</Typography>
@@ -290,7 +290,7 @@ export const App: React.FC = () => {
               </CardContent>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={12} md={4}>
+          <Grid size={{ xs: 12, sm: 12, md: 4 }}>
             <Card sx={{ background: summary && summary.net >= 0 ? 'linear-gradient(135deg, #388e3c 0%, #4caf50 100%)' : 'linear-gradient(135deg, #d32f2f 0%, #f44336 100%)', color: 'white' }}>
               <CardContent sx={{ pb: isMobile ? 2 : 3 }}>
                 <Typography variant={isMobile ? "body1" : "h6"}>{summary && summary.net >= 0 ? '📈 Net Profit' : '📉 Net Loss'}</Typography>
@@ -303,13 +303,13 @@ export const App: React.FC = () => {
         {/* All Time Summaries */}
         <Typography variant="h5" gutterBottom sx={{ mt: 4, mb: 2 }}>📈 All Time Summaries</Typography>
         <Grid container spacing={isMobile ? 2 : 3}>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             {renderSummaryTable(allTimeAccount, "By Accounts", "🏦")}
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             {renderSummaryTable(allTimeCategory, "By Categories", "📂")}
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid size={{ xs: 12, md: 4 }}>
             {renderSummaryTable(allTimeCurrency, "By Currency", "💱")}
           </Grid>
         </Grid>
@@ -317,10 +317,10 @@ export const App: React.FC = () => {
         {/* This Month Summaries */}
         <Typography variant="h5" gutterBottom sx={{ mt: 4, mb: 2 }}>📅 This Month ({new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })})</Typography>
         <Grid container spacing={isMobile ? 2 : 3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             {renderSummaryTable(monthlyAccount, "By Accounts", "🏦")}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             {renderSummaryTable(monthlyCategory, "By Categories", "📂")}
           </Grid>
         </Grid>
@@ -328,10 +328,10 @@ export const App: React.FC = () => {
         {/* This Year Summaries */}
         <Typography variant="h5" gutterBottom sx={{ mt: 4, mb: 2 }}>📆 This Year ({currentYear})</Typography>
         <Grid container spacing={isMobile ? 2 : 3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             {renderSummaryTable(yearlyAccount, "By Accounts", "🏦")}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             {renderSummaryTable(yearlyCategory, "By Categories", "📂")}
           </Grid>
         </Grid>
@@ -339,10 +339,10 @@ export const App: React.FC = () => {
         {/* Last 30 Days Summaries */}
         <Typography variant="h5" gutterBottom sx={{ mt: 4, mb: 2 }}>🗓️ Last 30 Days</Typography>
         <Grid container spacing={isMobile ? 2 : 3}>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             {renderSummaryTable(last30Account, "By Accounts", "🏦")}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid size={{ xs: 12, md: 6 }}>
             {renderSummaryTable(last30Category, "By Categories", "📂")}
           </Grid>
         </Grid>

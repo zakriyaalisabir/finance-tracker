@@ -29,11 +29,22 @@ const renderWithProviders = (component: React.ReactElement) => {
 };
 
 // Mock fetch
-global.fetch = jest.fn();
+global.fetch = jest.fn(() => 
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve([])
+  })
+) as jest.Mock;
 
 describe('App Component', () => {
   beforeEach(() => {
     (fetch as jest.Mock).mockClear();
+    (fetch as jest.Mock).mockImplementation(() => 
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve([])
+      })
+    );
   });
 
   it('renders finance tracker title', () => {
