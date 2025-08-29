@@ -4,6 +4,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import crypto from 'crypto';
 import { addAccount, getAccounts, addCategory, getCategories, addTransaction, getSummary, getMonthlyBreakdown, postSubscriptions, addSubscription, getSubscriptions, addNetWorthSnapshot, getNetWorthHistory } from './dynamo';
 import { API_ENDPOINTS } from './constants';
 
@@ -158,7 +159,92 @@ app.post('/reset', (req, res) => {
   });
 });
 
+// Webhook endpoints
+app.post('/webhooks/twilio', express.urlencoded({ extended: false }), async (req, res) => {
+  const body = req.body;
+  const from = body.From;
+  const text = (body.Body || '').trim().toUpperCase();
+
+  if (text.startsWith('PAID')) {
+    const maybeName = text.replace(/^PAID/, '').trim();
+    let sub;
+    if (maybeName) {
+      sub = mockData.subscriptions.find(s => 
+        s.channel === 'whatsapp' && 
+        s.contact?.includes(from.replace('whatsapp:', '')) &&
+        s.name.toLowerCase().includes(maybeName.toLowerCase())
+      );
+    } else {
+      sub = mockData.subscriptions.find(s => 
+        s.channel === 'whatsapp' && 
+        s.contact?.includes(from.replace('whatsapp:', ''))
+      );
+    }
+    if (sub) {
+      const payment = {
+        id: Date.now().toString(),
+        subscriptionId: sub.id,
+        amount: sub.amount,
+        paidAt: new Date().toISOString()
+      };
+      console.log('Payment recorded:', payment);
+    }
+  }
+  res.status(200).end();
+});
+
+function validateLineSignature(rawBody: string, signature: string) {
+  const secret = process.env.LINE_CHANNEL_SECRET || 'test-secret';
+  const hmac = crypto.createHmac('sha256', secret).update(rawBody).digest('base64');
+  return hmac === signature;
+}
+
+app.post('/webhooks/line', express.raw({ type: 'application/json' }), async (req, res) => {
+  const signature = req.header('x-line-signature') || '';
+  if (!validateLineSignature(req.body.toString(), signature)) {
+    return res.status(401).send('Bad signature');
+  }
+
+  const payload = JSON.parse(req.body.toString());
+  const events = payload.events || [];
+
+  for (const ev of events) {
+    if (ev.type === 'message' && ev.message?.type === 'text') {
+      const text = ev.message.text.trim().toUpperCase();
+      const userId = ev.source.userId;
+      if (text.startsWith('PAID')) {
+        const maybeName = text.replace(/^PAID/, '').trim();
+        let sub;
+        if (maybeName) {
+          sub = mockData.subscriptions.find(s => 
+            s.channel === 'line' && 
+            s.contact === userId &&
+            s.name.toLowerCase().includes(maybeName.toLowerCase())
+          );
+        } else {
+          sub = mockData.subscriptions.find(s => 
+            s.channel === 'line' && 
+            s.contact === userId
+          );
+        }
+        if (sub) {
+          const payment = {
+            id: Date.now().toString(),
+            subscriptionId: sub.id,
+            amount: sub.amount,
+            paidAt: new Date().toISOString()
+          };
+          console.log('Payment recorded:', payment);
+        }
+      }
+    }
+  }
+  res.status(200).end();
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Local API server running on http://localhost:${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
+  console.log(`📱 WhatsApp webhook: http://localhost:${PORT}/webhooks/twilio`);
+  console.log(`📱 LINE webhook: http://localhost:${PORT}/webhooks/line`);
 });

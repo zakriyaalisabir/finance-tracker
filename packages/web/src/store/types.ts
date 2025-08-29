@@ -37,6 +37,9 @@ interface Subscription {
   amount: number;
   frequency: 'monthly' | 'yearly';
   currency: string;
+  channel?: 'whatsapp' | 'line';
+  contact?: string;
+  graceDays?: number;
   lastPosted?: string;
   createdAt?: string;
 }

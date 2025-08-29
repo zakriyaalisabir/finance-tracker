@@ -23,6 +23,8 @@ A comprehensive personal finance management system built with TypeScript, React,
 - **Recurring Subscriptions** - Netflix, Internet, Mobile, etc.
 - **Auto-posting** - Automatically posts due payments as transactions
 - **Flexible Frequencies** - Monthly and yearly subscription support
+- **WhatsApp/LINE Reminders** - Send payment reminders via messaging apps
+- **Payment Confirmations** - Users reply "PAID" to auto-mark bills as paid
 
 ### 💰 Budget Management
 - **Category Budgets** - Set monthly budget limits for each spending category
@@ -136,6 +138,10 @@ npm run test        # Run Jest tests
 
 ## API Endpoints
 
+### Webhooks
+- `POST /webhooks/twilio` - WhatsApp payment confirmations
+- `POST /webhooks/line` - LINE payment confirmations
+
 ### Transactions
 - `POST /transactions` - Add new transaction
 - `GET /transactions` - List all transactions
@@ -229,6 +235,11 @@ cd packages/web && npm test
 - `TRANSACTIONS_TABLE` - DynamoDB transactions table name
 - `SUBSCRIPTIONS_TABLE` - DynamoDB subscriptions table name
 - `NETWORTH_TABLE` - DynamoDB net worth table name
+- `TWILIO_ACCOUNT_SID` - Twilio account SID for WhatsApp
+- `TWILIO_AUTH_TOKEN` - Twilio auth token
+- `TWILIO_WA_FROM` - Twilio WhatsApp number
+- `LINE_CHANNEL_ACCESS_TOKEN` - LINE messaging API token
+- `LINE_CHANNEL_SECRET` - LINE channel secret
 
 ### Constants
 All magic strings and configuration values are centralized in `constants.ts` files:

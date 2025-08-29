@@ -16,12 +16,15 @@
   },
   "dependencies": {
     "@finance-tracker/shared": "1.0.0",
+    "@types/node-fetch": "^2.6.13",
     "aws-sdk": "^2.1482.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "node-cron": "^3.0.3",
-    "serverless-http": "^3.2.0"
+    "node-fetch": "^3.3.2",
+    "serverless-http": "^3.2.0",
+    "twilio": "^5.8.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.0",
